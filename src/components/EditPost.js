@@ -12,24 +12,28 @@ const styles = {
       justifyContent: "center"
    },
    title: {
-      marginTop: 5,
-      marginBottom: 5,
-      fontWeight: "bold"
+      padding: 10,
+      fontWeight: "bold",
+      fontSize: 20,
+      background: "#03506f",
+      color: "#f5f5f5",
+      borderRadius: 5
    },
    form: {
       display: "flex",
       flexDirection: "column",
       textAlign: "center",
-      border: "2px solid black",
-      borderRadius: 5
-   },
-   button: {
+      border: "2px solid #03506f",
+      borderRadius: 5,
+      background: "#f5f5f5",
+      padding: 20,
       margin: 10
    },
-   field: {
-      marginTop: 5,
-      marginBottom: 5,
-      background: "#f5f5f5"
+   button: {
+      margin: 20
+   },
+   titleBox: {
+      margin: 20,
    }
 };
 
@@ -63,15 +67,20 @@ export default function EditPost() {
 
    const onSubmitPost = (e) => {
       e.preventDefault();
+      console.log(post.title.length, post.body.length)
 
-      axios.put(`${conf.API_URL}/posts/${id}`, post)
-         .then(res => {
-            console.log(res.data);
-            context.handleSnackbar("success", "¡Post editado!");
-         })
-         .catch(err => {
-            context.handleSnackbar("error", "No se pudo editar el post.");
-         });
+      if (post.title.length > 100 || post.body.length < 150) {
+         context.handleSnackbar("error", "No se pudo editar el post. Caracteres insuficientes.")
+      } else {
+         axios.put(`${conf.API_URL}/posts/${id}`, post)
+            .then(res => {
+               console.log(res.data);
+               context.handleSnackbar("success", "¡Post editado!");
+            })
+            .catch(err => {
+               context.handleSnackbar("error", "No se pudo editar el post.");
+            });
+      }
    };
 
    return (
@@ -79,17 +88,22 @@ export default function EditPost() {
          <Grid container item xs={12} style={styles.grid}>
             <Grid item xs={12} sm={6}>
                <form onSubmit={onSubmitPost} style={styles.form}>
-                  <Typography variant="button" style={styles.title}>Title</Typography>
+                  <div style={styles.titleBox}>
+                     <Typography style={styles.title} variant="button" >Título</Typography>
+                  </div>
                   <TextField
                      name="title"
                      onChange={onChangeHandler}
                      value={post.title}
                      fullWidth
+                     multiline
                      style={styles.field}
                   >
                      {post.title}
                   </TextField>
-                  <Typography variant="button" style={styles.title}>Body</Typography>
+                  <div style={styles.titleBox}>
+                     <Typography style={styles.title} variant="button">Cuerpo</Typography>
+                  </div>
                   <TextField
                      name="body"
                      onChange={onChangeHandler}
@@ -104,6 +118,7 @@ export default function EditPost() {
                      style={styles.button}
                      variant="contained"
                      type="submit"
+                     color="primary"
                   >
                      Confirmar
                   </Button>
