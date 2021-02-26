@@ -24,8 +24,11 @@ export default function Appbar({ children }) {
                     <Link to="/" style={styles.link}>
                         INICIO
                     </Link>
-                    <Link to="/edit" style={styles.link}>
-                        EDITAR
+                    <Link to="/posts/create" style={styles.link}>
+                        NUEVO POST
+                    </Link>
+                    <Link to="/posts/edit" style={styles.link}>
+                        EDITAR POST
                     </Link>
                 </Toolbar>
             </AppBar>
