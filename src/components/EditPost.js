@@ -54,7 +54,7 @@ export default function EditPost() {
             setPost(res.data);
          })
          .catch(err => console.log(err));
-   }, []);
+   }, [id]);
 
    const onChangeHandler = (e) => {
       const { name, value } = e.target;
