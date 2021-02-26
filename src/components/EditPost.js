@@ -67,9 +67,8 @@ export default function EditPost() {
 
    const onSubmitPost = (e) => {
       e.preventDefault();
-      console.log(post.title.length, post.body.length)
 
-      if (post.title.length > 100 || post.body.length < 150) {
+      if (!post.title || post.body.length < 100) {
          context.handleSnackbar("error", "No se pudo editar el post. Caracteres insuficientes.")
       } else {
          axios.put(`${conf.API_URL}/posts/${id}`, post)
@@ -120,7 +119,7 @@ export default function EditPost() {
                      type="submit"
                      color="primary"
                   >
-                     Confirmar
+                     Actualizar
                   </Button>
                </form>
             </Grid>
