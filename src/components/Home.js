@@ -80,7 +80,7 @@ export default function Home({ history }) {
    };
 
    const handleEditPost = id => () => {
-      history.push(`/edit/${id}`)
+      history.push(`/posts/edit/${id}`)
    };
 
    const handleDeletePost = id => () => {
