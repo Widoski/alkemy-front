@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Snackbar, ThemeProvider } from '@material-ui/core';
+import AppContext from './appContext';
+import MuiAlert from '@material-ui/lab/Alert';
+import theme from './theme';
 import Home from './components/Home';
 import Edit from './components/Edit';
 import EditPost from './components/EditPost';
-import AppContext from './appContext';
-import theme from './theme';
-import { Snackbar, ThemeProvider } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
-
+import CreatePost from './components/CreatePost';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -38,7 +38,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-
       <AppContext.Provider
         value={{
           handleSnackbar
@@ -47,8 +46,9 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/edit" component={Edit} />
-            <Route exact path="/edit/:id" component={EditPost} />
+            <Route exact path="/posts/create" component={CreatePost} />
+            <Route exact path="/posts/edit" component={Edit} />
+            <Route exact path="/posts/edit/:id" component={EditPost} />
           </Switch>
         </Router>
         {
