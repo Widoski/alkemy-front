@@ -1,5 +1,4 @@
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 const styles = {
@@ -10,6 +9,9 @@ const styles = {
     },
     toolbar: {
         display: "flex",
+    },
+    appBar: {
+        marginBottom: 15
     }
 };
 
@@ -17,7 +19,7 @@ export default function Appbar({ children }) {
 
     return (
         <>
-            <AppBar position="static">
+            <AppBar position="static" style={styles.appBar}>
                 <Toolbar style={styles.toolbar}>
                     <Link to="/" style={styles.link}>
                         INICIO
