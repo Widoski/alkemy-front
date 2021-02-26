@@ -24,6 +24,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import axios from 'axios';
 import conf from '../conf';
 import AppContext from '../appContext';
+import Paginate from '../paginate';
 
 const styles = {
    grid: {
@@ -32,6 +33,9 @@ const styles = {
    },
    tableHead: {
       fontWeight: "bold",
+   },
+   tableContainer: {
+      margin: 20
    }
 };
 
@@ -50,13 +54,22 @@ export default function Home({ history }) {
    let offset = 0;
 
    useEffect(() => {
-      axios.get(`${conf.API_URL}/posts?limit=${limit}&offset=${offset}`)
+      fetchPosts(1);
+   }, []);
+
+   const fetchPosts = (page) => {
+      if (page === 1) {
+         offset = 0;
+      } else {
+         offset = limit * (page - 1);
+      }
+      axios.get(`${conf.API_URL}/posts?_start=${offset}&_limit=${limit}`)
          .then(res => {
-            setPosts(res.data); //rows si usas sql
-            setCount(res.data.count);
+            setPosts(res.data);
+            setCount(res.headers["x-total-count"]);
          })
          .catch(err => console.log(err));
-   }, []);
+   }
 
    const handleReadPost = id => () => {
       axios.get(`${conf.API_URL}/posts/${id}`)
@@ -142,6 +155,7 @@ export default function Home({ history }) {
                      }
                   </TableBody>
                </Table>
+               <Paginate count={count} limit={limit} fetchRegisters={fetchPosts} />
             </TableContainer>
          </Grid>
 

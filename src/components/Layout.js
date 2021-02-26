@@ -9,6 +9,7 @@ const styles = {
     },
     toolbar: {
         display: "flex",
+        justifyContent: "space-around"
     },
     appBar: {
         marginBottom: 15
@@ -16,7 +17,6 @@ const styles = {
 };
 
 export default function Appbar({ children }) {
-
     return (
         <>
             <AppBar position="static" style={styles.appBar}>

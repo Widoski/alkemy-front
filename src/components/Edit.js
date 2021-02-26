@@ -14,6 +14,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
 import conf from '../conf';
+import Paginate from '../paginate';
 
 const styles = {
    grid: {
@@ -22,6 +23,9 @@ const styles = {
    },
    tableHead: {
       fontWeight: "bold",
+   },
+   tableContainer: {
+      margin: 10
    }
 };
 
@@ -29,17 +33,26 @@ export default function Edit({ history }) {
    const [posts, setPosts] = useState([]);
    const [count, setCount] = useState(0);
 
-   const limit = 10;
+   const limit = 20;
    let offset = 0;
 
    useEffect(() => {
-      axios.get(`${conf.API_URL}/posts?limit=${limit}&offset=${offset}`)
+      fetchPosts(1);
+   }, []);
+
+   const fetchPosts = (page) => {
+      if (page === 1) {
+         offset = 0;
+      } else {
+         offset = limit * (page - 1);
+      }
+      axios.get(`${conf.API_URL}/posts?_start=${offset}&_limit=${limit}`)
          .then(res => {
-            setPosts(res.data); //rows si usas sql
-            setCount(res.data.count);
+            setPosts(res.data);
+            setCount(res.headers["x-total-count"]);
          })
          .catch(err => console.log(err));
-   }, []);
+   }
 
    const handleEditPost = id => () => {
       history.push(`/posts/edit/${id}`);
@@ -69,6 +82,7 @@ export default function Edit({ history }) {
                      }
                   </TableBody>
                </Table>
+               <Paginate count={count} limit={limit} fetchRegisters={fetchPosts} />
             </TableContainer>
          </Grid>
       </Layout>
